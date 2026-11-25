@@ -1,0 +1,115 @@
+name: Renderizar cena
+
+on:
+  workflow_dispatch:
+    inputs:
+      cena:
+        description: "Pasta da cena (ex.: etapa1)"
+        required: true
+        default: "etapa1"
+      resolucao:
+        description: "Escala da resolução (1.0 = 1280x720 e 720x1280; 0.5 = teste rápido)"
+        required: true
+        default: "1.0"
+      amostras:
+        description: "Qualidade (16 = rápido, 48 = bom, 96 = final)"
+        required: true
+        default: "48"
+      quadros_por_job:
+        description: "Quadros por trabalho paralelo"
+        required: true
+        default: "15"
+
+permissions:
+  contents: write
+
+jobs:
+  plano:
+    runs-on: ubuntu-latest
+    outputs:
+      matriz: ${{ steps.p.outputs.matriz }}
+    steps:
+      - uses: actions/checkout@v4
+      - id: p
+        run: python3 ferramentas/plano.py "${{ inputs.cena }}" "${{ inputs.quadros_por_job }}"
+
+  renderizar:
+    needs: plano
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        item: ${{ fromJson(needs.plano.outputs.matriz) }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Instalar Blender (versão oficial 4.5 LTS)
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq libxi6 libxrender1 libxfixes3 libxxf86vm1 libxkbcommon0 libsm6 libgl1 libegl1
+          BASE=https://download.blender.org/release/Blender4.5
+          ARQ=$(curl -s $BASE/ | grep -o 'blender-4\.5\.[0-9]*-linux-x64\.tar\.xz' | sort -uV | tail -1)
+          echo "Baixando $ARQ"
+          curl -sL "$BASE/$ARQ" -o blender.tar.xz
+          mkdir -p $HOME/blender
+          tar -xf blender.tar.xz -C $HOME/blender --strip-components=1
+          $HOME/blender/blender --version | head -1
+
+      - name: Renderizar quadros ${{ matrix.item.ini }} a ${{ matrix.item.fim }} (${{ matrix.item.formato }})
+        shell: bash
+        env:
+          TRICKNET_LIB: ${{ github.workspace }}/lib
+          DENOISE: "1"
+        run: |
+          mkdir -p quadros
+          $HOME/blender/blender --version | head -1 > blender.log
+          $HOME/blender/blender -b -noaudio --python-exit-code 1 --python cenas/${{ inputs.cena }}/cena.py -- \
+            ${{ matrix.item.formato }} anim $PWD/quadros/f_ 1 ${{ inputs.resolucao }} ${{ inputs.amostras }} \
+            ${{ matrix.item.ini }} ${{ matrix.item.fim }} 2>&1 | tee -a blender.log
+          test -n "$(ls quadros/*.png 2>/dev/null)" || { echo "::error::O Blender nao gerou nenhum quadro"; exit 1; }
+          ls quadros | head -3
+
+      - name: Salvar diagnóstico no repositório (só se falhar)
+        if: failure()
+        shell: bash
+        run: |
+          git config user.name "render-bot"
+          git config user.email "render-bot@users.noreply.github.com"
+          mkdir -p diagnostico
+          tail -n 120 blender.log > diagnostico/render_${{ matrix.item.formato }}_${{ matrix.item.ini }}.txt
+          git add diagnostico
+          git commit -qm "diagnostico ${{ matrix.item.formato }} ${{ matrix.item.ini }}"
+          for i in 1 2 3 4 5 6; do git pull -q --rebase && git push -q && break; sleep $((RANDOM % 6 + 2)); done
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: quadros-${{ matrix.item.formato }}-${{ matrix.item.ini }}
+          path: quadros/*.png
+          retention-days: 2
+
+  montar:
+    needs: renderizar
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Instalar ffmpeg e fonte
+        run: sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg fonts-dejavu-core
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: quadros-h-*
+          path: quadros/h
+          merge-multiple: true
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: quadros-v-*
+          path: quadros/v
+          merge-multiple: true
+      - name: Montar vídeos (horizontal e vertical)
+        run: |
+          python3 ferramentas/montar.py --cena "${{ inputs.cena }}" --formato h --quadros quadros/h --saida videos
+          python3 ferramentas/montar.py --cena "${{ inputs.cena }}" --formato v --quadros quadros/v --saida videos
+      - uses: actions/upload-artifact@v4
+        with:
+          name: videos-${{ inputs.cena }}
+          path: videos/*.mp4
+          retention-days: 1
