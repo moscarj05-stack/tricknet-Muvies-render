@@ -1,0 +1,11 @@
+Blender 4.5.17 LTS
+Blender 4.5.17 LTS (hash 2f5ec98689b8 built 2026-11-24 01:31:29)
+Traceback (most recent call last):
+  File "/home/runner/work/tricknet-Muvies-render/tricknet-Muvies-render/cenas/etapa1/cena.py", line 11, in <module>
+    RES = float(argv[4]) if len(argv) > 4 else 0.5
+          ^^^^^^^^^^^^^^
+ValueError: could not convert string to float: '0,5'
+
+Error: script failed, file: 'cenas/etapa1/cena.py', exiting.
+
+Blender quit
