@@ -1,0 +1,166 @@
+{
+  "titulo": "Etapa 1 - Pressão da água",
+  "total_quadros": 60,
+  "fps": 24,
+  "formatos": {
+    "h": {
+      "largura": 1280,
+      "altura": 720,
+      "arquivo": "etapa1_horizontal.mp4"
+    },
+    "v": {
+      "largura": 720,
+      "altura": 1280,
+      "arquivo": "etapa1_vertical.mp4"
+    }
+  },
+  "legendas": {
+    "h": [
+      {
+        "texto": "pouca altura",
+        "tam": 50,
+        "cor": "ffffff",
+        "borda": "0b3d91",
+        "bw": 4,
+        "x": "850",
+        "y": "150",
+        "de": 0,
+        "ate": 19
+      },
+      {
+        "texto": "= pouca",
+        "tam": 50,
+        "cor": "ffffff",
+        "borda": "0b3d91",
+        "bw": 4,
+        "x": "850",
+        "y": "220",
+        "de": 0,
+        "ate": 19
+      },
+      {
+        "texto": "pressão",
+        "tam": 50,
+        "cor": "ffffff",
+        "borda": "0b3d91",
+        "bw": 4,
+        "x": "850",
+        "y": "290",
+        "de": 0,
+        "ate": 19
+      },
+      {
+        "texto": "MAIS ALTURA",
+        "tam": 54,
+        "cor": "ffd23f",
+        "borda": "c1121f",
+        "bw": 5,
+        "x": "850",
+        "y": "130",
+        "de": 20,
+        "ate": 999
+      },
+      {
+        "texto": "= MAIS",
+        "tam": 54,
+        "cor": "ffd23f",
+        "borda": "c1121f",
+        "bw": 5,
+        "x": "850",
+        "y": "200",
+        "de": 20,
+        "ate": 999
+      },
+      {
+        "texto": "PRESSÃO!",
+        "tam": 54,
+        "cor": "ffd23f",
+        "borda": "c1121f",
+        "bw": 5,
+        "x": "850",
+        "y": "270",
+        "de": 20,
+        "ate": 999
+      },
+      {
+        "texto": "cada 1 metro de água",
+        "tam": 32,
+        "cor": "ffffff",
+        "borda": "0b3d91",
+        "bw": 4,
+        "x": "850",
+        "y": "370",
+        "de": 36,
+        "ate": 999
+      },
+      {
+        "texto": "≈ 0,1 bar",
+        "tam": 40,
+        "cor": "ffffff",
+        "borda": "0b3d91",
+        "bw": 4,
+        "x": "850",
+        "y": "415",
+        "de": 36,
+        "ate": 999
+      }
+    ],
+    "v": [
+      {
+        "texto": "pouca altura",
+        "tam": 58,
+        "cor": "ffffff",
+        "borda": "0b3d91",
+        "bw": 4,
+        "x": "(w-text_w)/2",
+        "y": "100",
+        "de": 0,
+        "ate": 19
+      },
+      {
+        "texto": "= pouca pressão",
+        "tam": 58,
+        "cor": "ffffff",
+        "borda": "0b3d91",
+        "bw": 4,
+        "x": "(w-text_w)/2",
+        "y": "175",
+        "de": 0,
+        "ate": 19
+      },
+      {
+        "texto": "MAIS ALTURA",
+        "tam": 58,
+        "cor": "ffd23f",
+        "borda": "c1121f",
+        "bw": 5,
+        "x": "(w-text_w)/2",
+        "y": "90",
+        "de": 20,
+        "ate": 999
+      },
+      {
+        "texto": "= MAIS PRESSÃO!",
+        "tam": 58,
+        "cor": "ffd23f",
+        "borda": "c1121f",
+        "bw": 5,
+        "x": "(w-text_w)/2",
+        "y": "165",
+        "de": 20,
+        "ate": 999
+      },
+      {
+        "texto": "cada 1 metro de água ≈ 0,1 bar",
+        "tam": 34,
+        "cor": "ffffff",
+        "borda": "0b3d91",
+        "bw": 4,
+        "x": "(w-text_w)/2",
+        "y": "250",
+        "de": 36,
+        "ate": 999
+      }
+    ]
+  }
+}
