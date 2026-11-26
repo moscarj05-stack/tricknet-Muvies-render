@@ -8,12 +8,12 @@ FORMATO = argv[0] if argv else "h"            # h = horizontal 16:9 | v = vertic
 MODO = argv[1] if len(argv) > 1 else "still"  # still | anim
 SAIDA = argv[2] if len(argv) > 2 else "/home/claude/out/e1.png"
 QUADRO = int(argv[3]) if len(argv) > 3 else 40
-RES = float(argv[4]) if len(argv) > 4 else 0.5
+RES = float(argv[4].replace(",", ".")) if len(argv) > 4 else 0.5
 AMOSTRAS = int(argv[5]) if len(argv) > 5 else 14
 F_INI = int(argv[6]) if len(argv) > 6 else 1
 F_FIM = int(argv[7]) if len(argv) > 7 else 60
 
-TOTAL = 60
+TOTAL = 84
 FPS = 24
 
 bpy.ops.wm.read_factory_settings(use_empty=True)
@@ -105,7 +105,7 @@ rot_h.data.extrude = 0.02
 rot_h.data.materials.append(M["ouro_brilho"])
 
 # ---------- manômetro na parede ----------
-GX, GZ, GY = 1.6, 1.7, 2.745
+GX, GZ, GY = 3.0, 1.7, 2.745
 add(cil, "ouro", loc=(GX, 2.775, GZ), rot=(math.pi / 2, 0, 0), esc=(0.29, 0.29, 0.015), vertices=48)
 add(cil, "visor", loc=(GX, 2.762, GZ), rot=(math.pi / 2, 0, 0), esc=(0.26, 0.26, 0.015), vertices=48)
 for k in range(7):
@@ -120,7 +120,7 @@ add(cubo, "ponteiro", loc=(0, 0, 0.085), esc=(0.013, 0.007, 0.095), size=2, pai=
 add(esf, "ouro", loc=(GX, GY - 0.012, GZ), esc=(0.03, 0.02, 0.03), segments=16, ring_count=10)
 
 # ---------- mascote ----------
-L.build_mascote(scn, (PX, 2.0, 0), 20)
+L.build_mascote(scn, (1.95, 2.0, 0), 20)
 
 # ---------- água: pulsos no cano e gotas do chuveiro ----------
 pulsos = []
@@ -133,10 +133,10 @@ for i in range(8):
     pulsos.append(g)
 
 rnd = random.Random(21)
-N_MAX = 64
+N_MAX = 120
 gotas = []
 for i in range(N_MAX):
-    esf(location=(PX, 2.2, Z_DUCHA - 0.05), radius=0.03, segments=10, ring_count=8)
+    esf(location=(PX, 2.2, Z_DUCHA - 0.05), radius=0.042, segments=10, ring_count=8)
     g = bpy.context.active_object
     g.data.materials.append(M["agua"])
     bpy.ops.object.shade_smooth()
@@ -179,9 +179,9 @@ for f in range(1, TOTAL + 1):
         kf(g, f, loc=(PX, PY, zb - s * comp), esc=(1, 1, 1), interp="LINEAR")
 
     # gotas do chuveiro
-    n_vis = int(14 + (N_MAX - 14) * p)
-    dur = 46 - 26 * p
-    largura = 0.14 + 0.20 * p
+    n_vis = int(8 + (N_MAX - 8) * p)
+    dur = 50 - 34 * p
+    largura = 0.12 + 0.34 * p
     for i, g in enumerate(gotas):
         fase_g[i] = (fase_g[i] + 1.0 / dur) % 1.0
         t = fase_g[i]
@@ -190,9 +190,9 @@ for f in range(1, TOTAL + 1):
         else:
             r = (0.06 + 0.5 * g["raio"]) * largura * (0.4 + 2.2 * t)
             x = PX + math.cos(g["ang"]) * r
-            y = 2.2 - 0.05 * t * 2 + math.sin(g["ang"]) * r * 0.9
+            y = 2.2 - 0.05 * t * 2 + math.sin(g["ang"]) * r * 0.45
             z = (Z_DUCHA - 0.05) - (Z_DUCHA - 0.05 - 0.02) * (t ** (1.6 - 0.35 * p))
-            kf(g, f, loc=(x, y, z), esc=(1, 1, 1.3 + 0.6 * p), interp="CONSTANT")
+            kf(g, f, loc=(x, y, z), esc=(0.8 + 0.4 * p, 0.8 + 0.4 * p, 1.1 + 3.0 * p), interp="CONSTANT")
 
 # ---------- mundo, luzes ----------
 w = bpy.data.worlds.new("mundo")
@@ -236,19 +236,28 @@ scn.camera = cam
 if FORMATO == "h":
     DIST, TZ0, TZ1, TX = 8.4, 1.6, 2.35, 2.35
     XOFF = 0.20
+    DIST_F, TZ_F, TX_F, TY_F = 4.8, 1.75, 2.45, 2.2
     base_x, base_y = 1280, 720
 else:
-    DIST, TZ0, TZ1, TX = 7.8, 2.4, 2.7, 1.75
-    XOFF = 0.12
+    DIST, TZ0, TZ1, TX = 8.6, 2.4, 2.7, 1.85
+    XOFF = 0.10
+    DIST_F, TZ_F, TX_F, TY_F = 4.8, 1.75, 2.4, 2.2
     base_x, base_y = 720, 1280
 
 bpy.context.preferences.edit.keyframe_new_interpolation_type = "BEZIER"
 for f in range(1, TOTAL + 1):
     p = pressao(f)
     tz = TZ0 + (TZ1 - TZ0) * p
-    alvo.location = (TX, 1.4, tz)
+    tx, ty, dist = TX, 1.4, DIST
+    q = sm((f - 62) / 22.0)          # aproximação nos últimos quadros
+    if q > 0:
+        tz = tz + (TZ_F - tz) * q
+        tx = tx + (TX_F - tx) * q
+        ty = ty + (TY_F - ty) * q
+        dist = dist + (DIST_F - dist) * q
+    alvo.location = (tx, ty, tz)
     alvo.keyframe_insert("location", frame=f)
-    cam.location = (TX + XOFF * DIST, 1.4 - DIST, tz + 0.15 * DIST * 0.5)
+    cam.location = (tx + XOFF * dist, ty - dist, tz + 0.075 * dist)
     cam.keyframe_insert("location", frame=f)
 
 # ---------- render ----------

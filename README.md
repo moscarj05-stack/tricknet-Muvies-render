@@ -22,7 +22,7 @@ Fábrica de vídeos do canal **TrickNet Aprenda**: renderiza cenas 3D com o Blen
    Para o primeiro teste use resolução `0.5` e amostras `16` (rápido). Clique em **Run workflow**.
 6. Quando terminar (✓ verde), abra a execução e, no fim da página, em **Artifacts**, baixe `videos-etapa1`.
    Dentro estão `etapa1_horizontal.mp4` e `etapa1_vertical.mp4`.
-7. Para a qualidade final, rode de novo com resolução `1.0` e amostras `48` (ou `96`).
+7. Para a qualidade final, rode de novo com resolução `1.0` e amostras `48` (ou `96`). Use sempre PONTO nos números (0.5, e não 0,5).
 
 ## Observações
 - Repositório **público** tem minutos grátis ilimitados. Não coloque senhas nem chaves nos arquivos.

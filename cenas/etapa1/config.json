@@ -1,6 +1,6 @@
 {
   "titulo": "Etapa 1 - Pressão da água",
-  "total_quadros": 60,
+  "total_quadros": 84,
   "fps": 24,
   "formatos": {
     "h": {
@@ -25,7 +25,7 @@
         "x": "850",
         "y": "150",
         "de": 0,
-        "ate": 19
+        "ate": 23
       },
       {
         "texto": "= pouca",
@@ -36,7 +36,7 @@
         "x": "850",
         "y": "220",
         "de": 0,
-        "ate": 19
+        "ate": 23
       },
       {
         "texto": "pressão",
@@ -47,7 +47,7 @@
         "x": "850",
         "y": "290",
         "de": 0,
-        "ate": 19
+        "ate": 23
       },
       {
         "texto": "MAIS ALTURA",
@@ -57,8 +57,8 @@
         "bw": 5,
         "x": "850",
         "y": "130",
-        "de": 20,
-        "ate": 999
+        "de": 24,
+        "ate": 61
       },
       {
         "texto": "= MAIS",
@@ -68,8 +68,8 @@
         "bw": 5,
         "x": "850",
         "y": "200",
-        "de": 20,
-        "ate": 999
+        "de": 24,
+        "ate": 61
       },
       {
         "texto": "PRESSÃO!",
@@ -79,8 +79,8 @@
         "bw": 5,
         "x": "850",
         "y": "270",
-        "de": 20,
-        "ate": 999
+        "de": 24,
+        "ate": 61
       },
       {
         "texto": "cada 1 metro de água",
@@ -90,8 +90,8 @@
         "bw": 4,
         "x": "850",
         "y": "370",
-        "de": 36,
-        "ate": 999
+        "de": 44,
+        "ate": 61
       },
       {
         "texto": "≈ 0,1 bar",
@@ -101,7 +101,29 @@
         "bw": 4,
         "x": "850",
         "y": "415",
-        "de": 36,
+        "de": 44,
+        "ate": 61
+      },
+      {
+        "texto": "MAIS PRESSÃO,",
+        "tam": 54,
+        "cor": "ffd23f",
+        "borda": "c1121f",
+        "bw": 5,
+        "x": "40",
+        "y": "40",
+        "de": 62,
+        "ate": 999
+      },
+      {
+        "texto": "MAIS FORÇA NO BANHO!",
+        "tam": 54,
+        "cor": "ffd23f",
+        "borda": "c1121f",
+        "bw": 5,
+        "x": "40",
+        "y": "115",
+        "de": 62,
         "ate": 999
       }
     ],
@@ -115,7 +137,7 @@
         "x": "(w-text_w)/2",
         "y": "100",
         "de": 0,
-        "ate": 19
+        "ate": 23
       },
       {
         "texto": "= pouca pressão",
@@ -126,7 +148,7 @@
         "x": "(w-text_w)/2",
         "y": "175",
         "de": 0,
-        "ate": 19
+        "ate": 23
       },
       {
         "texto": "MAIS ALTURA",
@@ -136,8 +158,8 @@
         "bw": 5,
         "x": "(w-text_w)/2",
         "y": "90",
-        "de": 20,
-        "ate": 999
+        "de": 24,
+        "ate": 61
       },
       {
         "texto": "= MAIS PRESSÃO!",
@@ -147,8 +169,8 @@
         "bw": 5,
         "x": "(w-text_w)/2",
         "y": "165",
-        "de": 20,
-        "ate": 999
+        "de": 24,
+        "ate": 61
       },
       {
         "texto": "cada 1 metro de água ≈ 0,1 bar",
@@ -158,7 +180,29 @@
         "bw": 4,
         "x": "(w-text_w)/2",
         "y": "250",
-        "de": 36,
+        "de": 44,
+        "ate": 61
+      },
+      {
+        "texto": "MAIS PRESSÃO,",
+        "tam": 62,
+        "cor": "ffd23f",
+        "borda": "c1121f",
+        "bw": 5,
+        "x": "(w-text_w)/2",
+        "y": "110",
+        "de": 62,
+        "ate": 999
+      },
+      {
+        "texto": "MAIS FORÇA NO BANHO!",
+        "tam": 44,
+        "cor": "ffd23f",
+        "borda": "c1121f",
+        "bw": 5,
+        "x": "(w-text_w)/2",
+        "y": "190",
+        "de": 62,
         "ate": 999
       }
     ]
